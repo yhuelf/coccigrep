@@ -19,7 +19,7 @@ import argparse
 import sys
 import os
 import bisect
-import ConfigParser
+import configparser
 from coccigrep import COCCIGREP_VERSION
 from coccigrep import CocciGrep, CocciGrepConfig, CocciException
 from coccigrep import CocciException, CocciRunException, CocciConfigException
@@ -41,7 +41,7 @@ try:
             sys.stderr.write('Warning: unable to open local cocci dir \"%s\"\n' % (local_cocci_dir))
         except:
             pass
-except ConfigParser.NoOptionError:
+except configparser.NoOptionError:
     pass
 operations = coccigrep.get_operations()
 
@@ -73,15 +73,15 @@ args = parser.parse_args()
 try:
     spatch = cocciinst.get('global', 'spatch')
     coccigrep.set_spatch_cmd(spatch)
-except ConfigParser.NoOptionError:
+except configparser.NoOptionError:
     pass
 
 if args.listop:
     if args.verbose == False:
-        print ", ".join(operations)
+        print(", ".join(operations))
     else:
         for operation in operations:
-            print coccigrep.get_operation_info(operation)
+            print(coccigrep.get_operation_info(operation))
     sys.exit(0)
 
 if args.attribute != None and args.operation == 'used':
@@ -138,10 +138,10 @@ for arg in args.file:
 try:
     coccigrep.setup(args.type, args.attribute, args.operation)
     coccigrep.run(files)
-except CocciRunException, err:
+except CocciRunException as err:
     sys.stderr.write("Runtime error: " + str(err) + "\n")
     sys.exit(1)
-except CocciConfigException, err:
+except CocciConfigException as err:
     sys.stderr.write("Config error: " + str(err) + "\n")
     sys.exit(1)
 
@@ -159,7 +159,7 @@ else:
     output = coccigrep.display(mode='raw', before=args.before, after=args.after)
 
 if len(output) > 0:
-    print output
+    print(output)
 else:
     if args.verbose:
         sys.stderr.write("No match found in %s\n" % (",".join(args.file)))

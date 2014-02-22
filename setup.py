@@ -21,6 +21,7 @@ setup(name='coccigrep',
           'License :: OSI Approved :: GNU General Public License (GPL)',
           'Operating System :: POSIX',
           'Programming Language :: Python',
+          'Programming Language :: Python::3',
           'Topic :: Software Development',
           ],
       )

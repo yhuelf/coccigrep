@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 from os import unlink, path, listdir, getcwd
 from string import Template
 from subprocess import Popen, PIPE, STDOUT
@@ -199,7 +199,7 @@ class CocciProcess:
             else:
                 output = Popen(self.cmd, stdout=PIPE,
                     stderr=PIPE).communicate()[0]
-        except Exception, err:
+        except Exception as err:
             import pickle
             output = pickle.dumps(err)
 
@@ -374,7 +374,7 @@ for p in p1:
 
         :return: list of operations in a list of str
         """
-        return self.operations.keys()
+        return list(self.operations.keys())
 
     def get_operation_name(self, fname):
         return _operation_name(fname)
@@ -408,7 +408,7 @@ for p in p1:
         cmd = [self.spatch] + [ '-version']
         try:
             output = Popen(cmd, stdout=PIPE, stderr=STDOUT).communicate()[0]
-        except OSError, err:
+        except OSError as err:
             _raise_run_err(err, cmd)
         reg = r"version (.*?) with"
         m = re.search(reg, output)
@@ -503,7 +503,7 @@ for p in p1:
                     output = Popen(cmd, stdout=PIPE).communicate()[0]
                 else:
                     output = Popen(cmd, stdout=PIPE, stderr=PIPE).communicate()[0]
-            except OSError, err:
+            except OSError as err:
                 unlink(tmp_cocci_file_name)
                 _raise_run_err(err, cmd)
 
@@ -541,8 +541,7 @@ for p in p1:
         """
         if before != 0 or after != 0:
             prev_match = None
-            for index in xrange(len(self.matches)):
-                cur_match = self.matches[index]
+            for cur_match in self.matches:
                 cur_match.start_at = cur_match.line - before
                 cur_match.stop_at = cur_match.line + after
                 if cur_match.start_at < 1:
