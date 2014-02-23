@@ -293,7 +293,7 @@ p1 << init.p1;
 @@
 
 for p in p1:
-    print "%s:%s:%s:%s:%s" % (p.file,p.line,p.column,p.line_end,p.column_end)
+    print("%s:%s:%s:%s:%s" % (p.file,p.line,p.column,p.line_end,p.column_end))
 """
 
     def __init__(self):
@@ -411,7 +411,7 @@ for p in p1:
         except OSError as err:
             _raise_run_err(err, cmd)
         reg = r"version (.*?) with"
-        m = re.search(reg, output)
+        m = re.search(reg, output.decode('utf-8'))
         return m.group(1)
 
     def spatch_newer_than(self, version):
@@ -456,7 +456,7 @@ for p in p1:
             attribute=self.attribute, cocci_regexp_equal=cocci_op)
         cocci_grep = cocci_smpl + CocciGrep.cocci_python
 
-        tmp_cocci_file.write(cocci_grep)
+        tmp_cocci_file.write(cocci_grep.encode('utf-8'))
         tmp_cocci_file.flush()
 
         # launch spatch
@@ -512,7 +512,7 @@ for p in p1:
         prevfile = None
         prevline = None
         self.matches = []
-        for ematch in output.split("\n"):
+        for ematch in output.decode('utf-8').split("\n"):
             try:
                 (efile, eline, ecol, elinend, ecolend) = ematch.split(":")
                 nmatch = CocciMatch(efile, eline, ecol, elinend, ecolend)
